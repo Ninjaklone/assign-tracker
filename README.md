@@ -9,7 +9,8 @@ A comprehensive web application to track and manage assignments efficiently.
 - MongoDB
 - Mongoose
 - EJS Templating
-- Bootstrap (optional)
+- Bootstrap & Font Awesome for Icons (https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css)
+- Minimal to no Custom CSS used
 
 ## Installation
 
