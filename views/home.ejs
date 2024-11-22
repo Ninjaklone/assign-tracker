@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Dashboard</h1>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Assignments</h5>
+                <h2 class="card-text text-primary"><%= stats.total || 0 %></h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Overdue Assignments</h5>
+                <h2 class="card-text text-danger"><%= stats.overdue || 0 %></h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Completed Assignments</h5>
+                <h2 class="card-text text-success"><%= stats.completed || 0 %></h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4">
+        <div class="card">
+            <div class="card-header">
+                Quick Actions
+            </div>
+            <div class="card-body">
+                <a href="/add-assignment" class="btn btn-primary me-2">
+                    <i class="fas fa-plus"></i> Add New Assignment
+                </a>
+                <a href="/assignments" class="btn btn-outline-secondary">
+                    <i class="fas fa-list"></i> View All Assignments
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

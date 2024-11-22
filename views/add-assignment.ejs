@@ -1,0 +1,74 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <h2 class="mb-4">Add New Assignment</h2>
+    
+    <% if (locals.error && error.length > 0) { %>
+        <div class="alert alert-danger">
+            <% error.forEach(function(err) { %>
+                <p><%= err %></p>
+            <% }); %>
+        </div>
+    <% } %>
+
+    <form action="/add-assignment" method="POST">
+        <div class="form-group">
+            <label for="title">Assignment Title</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="title" 
+                name="title" 
+                value="<%= assignment.title || '' %>" 
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="course">Course</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="course" 
+                name="course" 
+                value="<%= assignment.course || '' %>" 
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input 
+                type="date" 
+                class="form-control" 
+                id="dueDate" 
+                name="dueDate" 
+                value="<%= assignment.dueDate ? new Date(assignment.dueDate).toISOString().split('T')[0] : '' %>" 
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="priority">Priority</label>
+            <select class="form-control" id="priority" name="priority">
+                <option value="High" <%= assignment.priority === 'High' ? 'selected' : '' %>>High</option>
+                <option value="Medium" <%= assignment.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
+                <option value="Low" <%= assignment.priority === 'Low' ? 'selected' : '' %>>Low</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description (Optional)</label>
+            <textarea 
+                class="form-control" 
+                id="description" 
+                name="description" 
+                rows="3"
+            ><%= assignment.description || '' %></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Assignment</button>
+    </form>
+</div>
+
+<%- include('partials/footer') %>

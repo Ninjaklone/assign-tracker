@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-danger">
+                <h2>Error</h2>
+                <p><%= message %></p>
+                
+                <% if (locals.error && process.env.NODE_ENV === 'development') { %>
+                    <pre class="text-muted"><%= error %></pre>
+                <% } %>
+            </div>
+            <a href="/" class="btn btn-primary">Return to Home</a>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
