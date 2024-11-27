@@ -13,8 +13,9 @@
     
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-     <!-- ico -->
-     <link rel="ico" href="...\public\ico\Education_31-60_321.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/ico/Education_31-60_321.jpg">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -26,33 +27,71 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/"><i class="fas fa-home"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/assignments"><i class="fas fa-list"></i> Assignments</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/add-assignment"><i class="fas fa-plus"></i> Add Assignment</a>
-                    </li>
+                    
+                    <% if (locals.user) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/add-assignment"><i class="fas fa-plus"></i> Add Assignment</a>
+                        </li>
+                    <% } %>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <% if (!locals.user) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Register</a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> <%= user.username %>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/profile"><i class="fas fa-user-circle"></i> Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="/logout">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    <% } %>
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <!-- Flash Messages -->
-        <% if (success_msg && success_msg.length > 0) { %>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <%= success_msg %>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <!-- Authentication Error Messages -->
+        <% if (locals.authError && locals.authError.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= authError %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <% } %>
 
-        <% if (error_msg && error_msg.length > 0) { %>
+        <!-- Success Messages -->
+        <% if (locals.success_msg && success_msg.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <%= success_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
+
+        <!-- Error Messages -->
+        <% if (locals.error_msg && error_msg.length > 0) { %>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <%= error_msg %>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <% } %>

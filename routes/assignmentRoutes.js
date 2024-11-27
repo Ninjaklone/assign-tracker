@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { authMiddleware } = require('./authRoutes');
 const assignmentController = require('../controllers/assignmentController');
 
 // Async Handling
@@ -14,17 +15,17 @@ router.get('/', asyncHandler(assignmentController.getHomePage));
 
 // Assignment Routes
 router.get('/assignments', asyncHandler(assignmentController.getAllAssignments));
-router.post('/assignments', asyncHandler(assignmentController.createAssignment)); // Add this line
+router.post('/assignments', asyncHandler(assignmentController.createAssignment)); 
 
 // Add Assignment Routes
-router.get('/add-assignment', assignmentController.addAssignmentForm);
-router.post('/add-assignment', asyncHandler(assignmentController.createAssignment));
+router.get('/add-assignment', authMiddleware, assignmentController.addAssignmentForm);
+router.post('/add-assignment', authMiddleware, asyncHandler(assignmentController.createAssignment));
 
 // Edit Assignment Routes
-router.get('/edit-assignment/:id', asyncHandler(assignmentController.editAssignmentForm));
-router.post('/edit-assignment/:id', asyncHandler(assignmentController.updateAssignment));
+router.get('/edit-assignment/:id', authMiddleware, asyncHandler(assignmentController.editAssignmentForm));
+router.post('/edit-assignment/:id', authMiddleware, asyncHandler(assignmentController.updateAssignment));
 
 // Delete Assignment Route
-router.get('/delete-assignment/:id', asyncHandler(assignmentController.deleteAssignment));
+router.get('/delete-assignment/:id', authMiddleware, asyncHandler(assignmentController.deleteAssignment));
 
 module.exports = router;
