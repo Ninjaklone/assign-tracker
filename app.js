@@ -11,6 +11,9 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Passport config
+require('./config/passport')(passport);
+
 // Middleware
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
@@ -21,8 +24,7 @@ app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Passport config
-require('./config/passport')(passport);
+
 
 // Validate SESSION_SECRET
 if (!process.env.SESSION_SECRET) {
@@ -41,6 +43,48 @@ app.use(session({
   }
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Middleware to pass user to all views
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated();
+  res.locals.user = req.isAuthenticated() ? req.user : null;
+
+  // Flash messages
+  res.locals.success_msg = req.flash('success') || '';
+  res.locals.error_msg = req.flash('error') || '';
+  res.locals.authError = req.flash('authError') || '';
+
+  next();
+});
+
+app.use((req, res, next) => {
+  console.log('User :', req.user);
+  console.log('Is Authenticated:', req.isAuthenticated());
+  
+  res.locals.isAuthenticated = req.isAuthenticated();
+  res.locals.user = req.isAuthenticated() ? req.user : null;
+
+  next();
+});
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Detailed Error:', err);
+  
+  // Ensure locals are set even during error
+  res.locals.user = req.isAuthenticated() ? req.user : null;
+  res.locals.success_msg = req.flash('success') || '';
+  res.locals.error_msg = req.flash('error') || '';
+  res.locals.authError = req.flash('authError') || '';
+
+  res.status(500).render('error', { 
+    title: 'Server Error',
+    message: err.message || 'Something went wrong',
+    error: process.env.NODE_ENV === 'development' ? err.stack : ''
+  });
+});
+
 // Flash Messages
 app.use(flash());
 
@@ -58,35 +102,6 @@ const authRoutes = require('./routes/authRoutes');
 app.use('/', assignmentRoutes);
 app.use('/api/auth', authRoutes.router);
 
-// Middleware to pass user to all views
-app.use((req, res, next) => {
-  // Ensure user is available in all views
-  res.locals.user = req.isAuthenticated() ? req.user : null;
-  
-  // Also pass other common locals
-  res.locals.success_msg = req.flash('success') || '';
-  res.locals.error_msg = req.flash('error') || '';
-  res.locals.authError = req.flash('authError') || '';
-  
-  next();
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Detailed Error:', err);
-  
-  // Ensure locals are set even during error
-  res.locals.user = req.isAuthenticated() ? req.user : null;
-  res.locals.success_msg = req.flash('success') || '';
-  res.locals.error_msg = req.flash('error') || '';
-  res.locals.authError = req.flash('authError') || '';
-
-  res.status(500).render('error', { 
-    title: 'Server Error',
-    message: err.message || 'Something went wrong',
-    error: process.env.NODE_ENV === 'development' ? err.stack : ''
-  });
-});
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI, {

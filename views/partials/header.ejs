@@ -35,7 +35,7 @@
                         <a class="nav-link" href="/assignments"><i class="fas fa-list"></i> Assignments</a>
                     </li>
                     
-                    <% if (locals.user) { %>
+                    <% if (locals.isAuthenticated) { %>
                         <li class="nav-item">
                             <a class="nav-link" href="/add-assignment"><i class="fas fa-plus"></i> Add Assignment</a>
                         </li>
@@ -59,7 +59,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" 
                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user"></i> 
-                                <%= locals.user ? locals.user.username : 'User' %>
+                                <%= locals.user ? locals.user.username : 'User ' %>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li>

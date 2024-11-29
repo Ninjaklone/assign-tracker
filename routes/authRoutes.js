@@ -9,7 +9,7 @@ const authMiddleware = (req, res, next) => {
     return next();
   }
   req.flash('error', 'Please log in to access this page');
-  res.redirect('/login');
+  res.redirect('/api/auth/login');
 };
 
 // Login Routes
