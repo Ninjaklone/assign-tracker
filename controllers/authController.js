@@ -52,6 +52,14 @@ class AuthController {
     }
   }
 
+  // Render Profile Page
+renderProfile(req, res) {
+  res.render('profile', { 
+    title: 'User  Profile',
+    user: req.user // Pass the authenticated user data to the view
+  });
+}
+
   // Logout
   logout(req, res) {
     req.logout((err) => {

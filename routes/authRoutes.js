@@ -26,6 +26,9 @@ router.post('/login', passport.authenticate('local', {
 router.get('/register', authController.renderRegister);
 router.post('/register', authController.register);
 
+// Profile Route
+router.get('/profile', authMiddleware, authController.renderProfile);
+
 // Logout Route
 router.get('/logout', (req, res) => {
   req.logout((err) => {
