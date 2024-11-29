@@ -26,6 +26,6 @@ router.get('/edit-assignment/:id', authMiddleware, asyncHandler(assignmentContro
 router.post('/edit-assignment/:id', authMiddleware, asyncHandler(assignmentController.updateAssignment));
 
 // Delete Assignment Route
-router.get('/delete-assignment/:id', authMiddleware, asyncHandler(assignmentController.deleteAssignment));
+router.post('/delete-assignment/:id', authMiddleware, asyncHandler(assignmentController.deleteAssignment));
 
 module.exports = router;

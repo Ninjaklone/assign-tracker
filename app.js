@@ -48,21 +48,42 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success');
   res.locals.error_msg = req.flash('error');
+  res.locals.authError = req.flash('authError');
   next();
 });
 
 // Routes
 const assignmentRoutes = require('./routes/assignmentRoutes');
 const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes.router);
 app.use('/', assignmentRoutes);
+app.use('/api/auth', authRoutes.router);
 
-// Error Handling Middleware
+// Middleware to pass user to all views
+app.use((req, res, next) => {
+  // Ensure user is available in all views
+  res.locals.user = req.isAuthenticated() ? req.user : null;
+  
+  // Also pass other common locals
+  res.locals.success_msg = req.flash('success') || '';
+  res.locals.error_msg = req.flash('error') || '';
+  res.locals.authError = req.flash('authError') || '';
+  
+  next();
+});
+
+// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Detailed Error:', err);
+  
+  // Ensure locals are set even during error
+  res.locals.user = req.isAuthenticated() ? req.user : null;
+  res.locals.success_msg = req.flash('success') || '';
+  res.locals.error_msg = req.flash('error') || '';
+  res.locals.authError = req.flash('authError') || '';
+
   res.status(500).render('error', { 
     title: 'Server Error',
-    message: 'Something went wrong!',
+    message: err.message || 'Something went wrong',
     error: process.env.NODE_ENV === 'development' ? err.stack : ''
   });
 });

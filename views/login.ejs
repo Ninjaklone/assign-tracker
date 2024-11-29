@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+    <h1 class="mb-4">Login</h1>
+
+    <!-- Authentication Error Messages -->
+    <% if (locals.authError && locals.authError.length > 0) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= authError %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <form action="/api/auth/login" method="POST">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <div class="mt-3">
+            <p>Don't have an account? <a href="/register">Register here</a></p>
+        </div>
+    </form>
+</div>
+
+<%- include('partials/footer') %>
